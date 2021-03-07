@@ -1,11 +1,9 @@
-# stock-analysis
-Module 2 analysis
 # Stock Analysis with VBA
 
 ## Overview of Project
 
-### Purpose
-The purpose of this data analysis was to analyze 2017 and 2018 stock data to find the total daily volume and yearly return for each stock using refactored code in order to see which stocks performed best.
+### Purpose of Analysis
+The purpose of this analysis was to help our friend Steve quickly review stock performance for 2017 and 2018 by looking at annual volume and return for various stock in the database.
 
 ## Results
 
