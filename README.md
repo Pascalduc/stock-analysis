@@ -100,7 +100,7 @@ Dim tickerVolumes(12) As Long
 Dim tickerStartingPrices(12) As Single
 Dim tickerEndingPrices(12) As Single
 ```
-Each array is then refered to in the code with the variable `(i).`
+Each array is then refered to in the code with the variable `(tickerIndex)`.
 ```
 For i = 0 To 11
 
