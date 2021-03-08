@@ -3,16 +3,62 @@
 ## Overview of Project
 
 ### Purpose of Analysis
-The purpose of this analysis was to help our good friend Steve quickly review stock performance in order to advice his parents. We made a code in VBA to quickly screen through stocks for 2017 and 2018 by looking at annual volume and return.
+The purpose of this analysis was to help our good friend Steve quickly review stock performance so he could better advice his parents. We made a code in VBA to quickly screen through stocks for 2017 and 2018 by looking at annual volume and return.
 
 ## Results
 
 ### Stock Performance between 2017 and 2018
-First we wanted to look at the total daily volume and return for each stock so we made a code with For Loop to run though each ticker index. We inserted a second For Loop into the first one, to check each rows from 2 to RowCount, which was determined using the formula: RowCount = Cells(Rows.Count, "A").End(xlUp).Row. The nested For Loop computed the total daily volume for the year, set a starting price and an ending price used to generate the annual return.
-For this analysis it is very important to make sure we activate the proper sheet in each loop since we analyze different years on different worksheet and output the results on another worksheet. We only had data for 2017 and 2018 but the code was made to be flexible in case other years are added. For this, we obtain the ‘yearValue’ variable using an input box and referencing to it throughout the code. When we want to insert the ‘yearValue’ text in a cell we used the` + +` signs. 
+First we wanted to look at the total daily volume and return for each stock so we made a code with a 'For Loop' to run though each ticker index. We inserted a second 'For Loop' into the first one, to check each rows from 2 to RowCount, which was determined using the formula: RowCount = Cells(Rows.Count, "A").End(xlUp).Row. The nested For Loop computed the total daily volume for the year, set a starting price and an ending price used to generate the annual return.
+```
+For i = 0 To 11
+   ticker = tickers(i)
+   totalVolume = 0
+    'loop through rows in the data
+   Worksheets(yearValue).Activate
+   For j = 2 To RowCount
+       'Get total volume for current ticker
+        If Cells(j, 1).Value = ticker Then
+
+        totalVolume = totalVolume + Cells(j, 8).Value
+
+        End If
+       'get starting price for current ticker
+        If Cells(j - 1, 1).Value <> ticker And Cells(j, 1).Value = ticker Then
+
+        startingPrice = Cells(j, 6).Value
+
+        End If
+       'get ending price for current ticker
+        If Cells(j + 1, 1).Value <> ticker And Cells(j, 1).Value = ticker Then
+
+        endingPrice = Cells(j, 6).Value
+        End If
+
+   Next j
+   
+      'Output data for current ticker
+    Worksheets("All Stocks Analysis").Activate
+    Cells(4 + i, 1).Value = ticker
+    Cells(4 + i, 2).Value = totalVolume
+    Cells(4 + i, 3).Value = endingPrice / startingPrice - 1
+    Cells(4 + i, 4).Value = startingPrice
+    Cells(4 + i, 5).Value = endingPrice
+    
+   
+Next i
+```
+
+For this original code it is very important to activate the correct worksheet in each loop since we analyze different years on different worksheet and output the results on another worksheet. We only had data for 2017 and 2018 but the code was made to be flexible in case other years are added. For this, we obtain the ‘yearValue’ variable using an input box and referencing to it throughout the code. When we want to insert the ‘yearValue’ text in a cell we used the` + +` signs. 
+```
 Range("A1").Value = "All Stocks (" + yearValue + ")"
-At the end of the code, we inserted a few lines of formatting applied to the rows and columns of interest and stopped our timer.
-That first code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable was created. This allowed us to avoid nesting loops and to store data for each ticker without having to run through each row multiple times. This new variable gave us access to the correct index across four aarays: tickerIndex(i), tickerVolumes(i), tickerStartingPrices(i), and tickerEndingPrices(i). In this case, variables must be initialized as below:
+```
+At the end of the code, we inserted a few lines of formatting applied to the rows and columns of interest then stopped our timer.
+
+That first code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable. This allowed us to store data for each ticker in the memory without having to run through each row multiple times while avoiding the nested loops. This new variable assigned an index across four aarays: 
+```
+tickerIndex(i), tickerVolumes(i), tickerStartingPrices(i), and tickerEndingPrices(i).
+```
+In this case, variables must be initialized as below:
 ```
 tickerIndex = 0
 Dim tickerVolumes(12) As Long
@@ -32,7 +78,7 @@ This new refactored code was almost ten times faster (~0.1 second) than the orig
 
 
 
-Overall, 2017 was a great year to invest with analyzed stocks in the green except for TERP with -7.2% return. On the other hand, 2018 could be considered a terrible year with 10 of the 12 stocks in the red with only ENPH and RUN having positive returns. While the dataset is small, based on years and tickers, we would recommend Steve to invest in ENPH and RUN since these two stocks have got positive returns even during a bad market year. This would suggest the companies are well managed keeping acceptable level of cashflow and are profitable even during uncertainties and economic downturn. 
+Overall, 2017 was a great year to invest with all analyzed stocks in the green except for TERP with -7.2% return. On the other hand, 2018 could be considered a terrible year with 10 of the 12 stocks in the red with only ENPH and RUN having positive returns. While the dataset is small to make a clear conclusion, we would recommend Steve to invest in ENPH and RUN since these two stocks got positive returns even during a bad market year. This would suggest such companies are well managed, are keeping acceptable level of cashflow and are profitable even during uncertainties and economic downturn. 
 
 #### Return 2017
 ![Return_2017](Resources/Return_2017.png)
