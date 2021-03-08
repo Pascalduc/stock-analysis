@@ -8,7 +8,7 @@ The purpose of this analysis was to help our good friend Steve quickly review st
 ## Results
 
 ### Stock Performance between 2017 and 2018
-First we wanted to look at the total daily volume and return for each stock so we made a code with a 'For Loop' to run though each ticker index. We inserted a second 'For Loop' into the first one, to check each rows from 2 to RowCount, which was determined using the formula: RowCount = Cells(Rows.Count, "A").End(xlUp).Row. The nested For Loop computed the total daily volume for the year, set a starting price and an ending price used to generate the annual return.
+First we wanted to look at the total daily volume and return for each stock so we made a code with a 'For Loop' to run though each ticker index. We inserted a second 'For Loop' into the first one, to check each rows from 2 to RowCount, which was determined using the formula: `RowCount = Cells(Rows.Count, "A").End(xlUp).Row.` The nested For Loop computed the total daily volume for the year, set a starting price and an ending price used to generate the annual return.
 ```
 For i = 0 To 11
    ticker = tickers(i)
