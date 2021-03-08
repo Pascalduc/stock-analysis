@@ -48,7 +48,7 @@ For i = 0 To 11
 Next i
 ```
 
-For this original code it is very important to activate the correct worksheet in each loop since the data to analyze and the output results are on different worksheet. We only had data for 2017 and 2018 but the code was made to be flexible in case other years are added. For this, we obtain the `yearValue` variable using an input box and referencing to it throughout the code. When we want to insert the `yearValue` text in a cell we used the`+ +` signs. 
+For this original code it is very important to activate the correct worksheet in each loop since the data to analyze and the output results are on different worksheet. We only had data for 2017 and 2018 but the code was made to be flexible in case other years are added. For this, we obtain the `yearValue` variable using an input box and referencing to it throughout the code. When we want to insert the `yearValue` text in a cell we used the `+ +` signs. 
 ```
 Range("A1").Value = "All Stocks (" + yearValue + ")"
 ```
