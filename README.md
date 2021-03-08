@@ -93,7 +93,7 @@ Columns("A:E").AutoFit
 End Sub
 ```
 
-The original code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable. This allowed us to store data for each ticker in the memory without having to run through each row multiple times while avoiding nested loops. This new variable assigned an index across four arrays which are initialized as below:
+The original code was a little slow to run (~ 1 second) so we refactored it using a new `tickerIndex` variable. This allowed us to store data for each ticker in the memory without having to run through each row multiple times while avoiding nested loops. This new variable assigned an index across four arrays which are initialized as below:
 ```
 tickerIndex = 0
 Dim tickerVolumes(12) As Long
