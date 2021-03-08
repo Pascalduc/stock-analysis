@@ -93,16 +93,58 @@ Columns("A:E").AutoFit
 End Sub
 ```
 
-That first code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable. This allowed us to store data for each ticker in the memory without having to run through each row multiple times while avoiding the nested loops. This new variable assigned an index across four aarays: 
-```
-tickerIndex(i), tickerVolumes(i), tickerStartingPrices(i), and tickerEndingPrices(i).
-```
-In this case, variables must be initialized as below:
+That original code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable. This allowed us to store data for each ticker in the memory without having to run through each row multiple times while avoiding nested loops. This new variable assigned an index across four arrays which are initialized as below:
 ```
 tickerIndex = 0
 Dim tickerVolumes(12) As Long
 Dim tickerStartingPrices(12) As Single
 Dim tickerEndingPrices(12) As Single
+```
+Each array is then refered to in the code with the variable `(i).`
+```
+For i = 0 To 11
+
+    tickerVolumes(i) = 0
+    
+Next i
+
+    '2b) Loop over all the rows in the spreadsheet.
+    For i = 2 To RowCount
+    
+        '3a) Increase volume for current ticker
+        tickerVolumes(tickerIndex) = tickerVolumes(tickerIndex) + Cells(i, 8).Value
+                
+        '3b) Check if the current row is the first row with the selected tickerIndex.
+        
+        If Cells(i - 1, 1) <> Cells(i, 1) Then
+            
+            tickerStartingPrices(tickerIndex) = Cells(i, 6).Value
+            
+        End If
+        
+        '3c) check if the current row is the last row with the selected ticker
+        
+        If Cells(i + 1, 1) <> Cells(i, 1) Then
+            
+            tickerEndingPrices(tickerIndex) = Cells(i, 6).Value
+              
+        '3d Increase the tickerIndex.
+            tickerIndex = tickerIndex + 1 
+            
+        End If
+    
+    Next i
+         
+    '4) Loop through your arrays to output the Ticker, Total Daily Volume, and Return.
+               
+        For i = 0 To 11
+                
+            Worksheets("All Stocks Analysis").Activate
+            Cells(4 + i, 1).Value = tickers(i)
+            Cells(4 + i, 2).Value = tickerVolumes(i)
+            Cells(4 + i, 3).Value = tickerEndingPrices(i) / tickerStartingPrices(i) - 1
+        
+        Next i
 ```
 This new refactored code was almost ten times faster (~0.1 second) than the original code and will be very helpful for Steve as his dataset to analyze might just get bigger and bigger. 
 
