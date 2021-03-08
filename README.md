@@ -1,192 +1,40 @@
-# Stock Analysis with VBA
+# Stock Analysis in VBA
 
 ## Overview of Project
 
 ### Purpose of Analysis
-The purpose of this analysis was to help our friend Steve quickly review stock performance for 2017 and 2018 by looking at annual volume and return for various stock in the database.
+The purpose of this analysis was to help our good friend Steve quickly review stock performance in order to advice his parents. We made a code in VBA to quickly screen through stocks for 2017 and 2018 by looking at annual volume and return.
 
 ## Results
 
 ### Stock Performance between 2017 and 2018
-The original script that was given created an InputBox that would run an analysis on the stock based on the year inputted by the user.
-```
-yearValue = InputBox("What year would you like to run the analysis on?")
-```
-The code then formatted the output by:
-- having the value in cell A1 say "All Stocks (year inputted by the user)";
-```
+First we wanted to look at the total daily volume and return for each stock so we made a code with For Loop to run though each ticker index. We inserted a second For Loop into the first one, to check each rows from 2 to RowCount, which was determined using the formula: RowCount = Cells(Rows.Count, "A").End(xlUp).Row. The nested For Loop computed the total daily volume for the year, set a starting price and an ending price used to generate the annual return.
+For this analysis it is very important to make sure we activate the proper sheet in each loop since we analyze different years on different worksheet and output the results on another worksheet. We only had data for 2017 and 2018 but the code was made to be flexible in case other years are added. For this, we obtain the ‘yearValue’ variable using an input box and referencing to it throughout the code. When we want to insert the ‘yearValue’ text in a cell we used the` + +` signs. 
 Range("A1").Value = "All Stocks (" + yearValue + ")"
-```
-- creating the header rows with "Ticker", "Total Daily Volume", and "Return";
-```
-Cells(3, 1).Value = "Ticker"
-Cells(3, 2).Value = "Total Daily Volume"
-Cells(3, 3).Value = "Return"
-```
-- and initializing an array of the tickers.
-```
-Dim tickers(12) As String
-    
-tickers(0) = "AY"
-tickers(1) = "CSIQ"
-tickers(2) = "DQ"
-tickers(3) = "ENPH"
-tickers(4) = "FSLR"
-tickers(5) = "HASI"
-tickers(6) = "JKS"
-tickers(7) = "RUN"
-tickers(8) = "SEDG"
-tickers(9) = "SPWR"
-tickers(10) = "TERP"
-tickers(11) = "VSLR"
-```
-The code then gets the number of rows to loop over.
-```
-RowCount = Cells(Rows.Count, "A").End(xlUp).Row
-```
-
-I refactored the code to create a tickerIndex variable to access the correct index across four arrays: the ticker (as established above), tickerVolumes, tickerStartingPrices, and tickerEndingPrices.
+At the end of the code, we inserted a few lines of formatting applied to the rows and columns of interest and stopped our timer.
+That first code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable was created. This allowed us to avoid nesting loops and to store data for each ticker without having to run through each row multiple times. This new variable gave us access to the correct index across four aarays: tickerIndex(i), tickerVolumes(i), tickerStartingPrices(i), and tickerEndingPrices(i). In this case, variables must be initialized as below:
 ```
 tickerIndex = 0
 Dim tickerVolumes(12) As Long
 Dim tickerStartingPrices(12) As Single
 Dim tickerEndingPrices(12) As Single
 ```
-I created a for loop to initialize the tickerVolumes array to zero.
-```
-For i = 0 To 11
+This new refactored code was almost ten times faster (~0.1 second) and will be very helpful for Steve as his dataset to analyze might just get bigger and bigger. 
+#INSERT TIMER HER
+![Timer 2017](./VBA_Challenge_2017).png)
 
-    tickerVolumes(i) = 0
-    
-Next i
-```
-I then created a loop over all the rows. Within the loop, the volume of the current tickerVolumes is increased with the tickerIndex variable as the index. The if-then statements check if the current row is the first row or the last row with the selected tickerIndex. If the current row is the first row, it is assigned the current closing price to the tickerStartingPrices variable. If the current row is the last row, it is assigned the current closing price to the tickerEndingPrices variable. The tickerIndex is then increased if the next row's ticker does not match the previous row's ticker.
-```
-    '2b) Loop over all the rows in the spreadsheet.
-    For i = 2 To RowCount
-    
-        '3a) Increase volume for current ticker
-        tickerVolumes(tickerIndex) = tickerVolumes(tickerIndex) + Cells(i, 8).Value
-        
-        
-        '3b) Check if the current row is the first row with the selected tickerIndex.
-         If Cells(i - 1, 1) <> Cells(i, 1) Then
-            
-                tickerStartingPrices(tickerIndex) = Cells(i, 6).Value
-            
-        End If
-        
-        '3c) check if the current row is the last row with the selected ticker
-         If Cells(i + 1, 1) <> Cells(i, 1) Then
-            
-                tickerEndingPrices(tickerIndex) = Cells(i, 6).Value
-                
-           
-                '3d Increase the tickerIndex.
-                tickerIndex = 1 + tickerIndex
-            
-            
-        End If
-    
-    Next i
-```
-Finally, I created a for loop through the tickers, tickerVolumes, tickerStartingPrices, and tickerEndingPrices arrays to output the "Ticker," "Total Daily Volume," and "Return" columns.
-```
-For i = 0 To 11
-        
-    Worksheets("All Stocks Analysis").Activate
-    Cells(4 + i, 1).Value = tickers(i)
-    Cells(4 + i, 2).Value = tickerVolumes(i)
-    Cells(4 + i, 3).Value = (tickerEndingPrices(i) / tickerStartingPrices(i)) - 1
-        
-Next i
-```
-The original script further formatted the table by bolding the headers and adding a bottom border; formatting the numbers in columns B and C with commas and percentages respectively, and autofitting column B. The for loop then loops through the data to determine if the percentages in the Return column are greater than zero, make the cell color green. If it is not greater than zero, it makes the cell red.
-```
-Worksheets("All Stocks Analysis").Activate
-Range("A3:C3").Font.FontStyle = "Bold"
-Range("A3:C3").Borders(xlEdgeBottom).LineStyle = xlContinuous
-Range("B4:B15").NumberFormat = "#,##0"
-Range("C4:C15").NumberFormat = "0.0%"
-Columns("B").AutoFit
+![Timer 2018](./ VBA_Challenge_2018.png)
 
-dataRowStart = 4
-dataRowEnd = 15
+Overall, 2017 was a great year to invest with analyzed stocks in the green except for TERP with -7.2% return. On the other hand, 2018 could be considered a terrible year with 10 of the 12 stocks in the red with only ENPH and RUN having positive returns. While the dataset is small, based on years and tickers, we would recommend Steve to invest in ENPH and RUN since these two stocks have got positive returns even during a bad market year. This would suggest the companies are well managed keeping acceptable level of cashflow and are profitable even during uncertainties and economic downturn. 
+![Return 2017](./ Return_2017).png)
 
-For i = dataRowStart To dataRowEnd
-        
-    If Cells(i, 3) > 0 Then
-            
-        Cells(i, 3).Interior.Color = vbGreen
-            
-    Else
-        
-        Cells(i, 3).Interior.Color = vbRed
-            
-    End If
-        
-Next i
-```
-The output from running the code for 2017 and 2018 produces these tables:
+![Return 2018](./ Return_2018.png)
 
-![All Stocks 2017](./Resources/All_Stocks_(2017).png)
-
-![All Stocks 2018](./Resources/All_Stocks_(2018).png)
-
-Based on the tables, we can see that stocks overall did significantly better in 2017 than they did in 2018. In 2017, the only stock with a negative return was TERP with -7.2%. In 2018, 10 of the 12 stocks had negative returns with only ENPH and RUN having positive returns. While there is not enough data to draw a conclusive recommendation on what to invest in, based on this data ENPH and RUN certainly seem like potential candidates to look into further as they were the only two stocks to have positive returns in both 2017 and 2018. Interestingly, RUN, which had a return of 5.5% in 2017, increased their return by a little more than 16 times with a return in 2018 of 84%.
-
-### Comparison of Original Script and Refactored Script
-To calcuate the execution times of the scripts, both the original and refactored scripts begin with creating start time and end time variables as single data types where the timer starts after the user inputs the year they would like to run the analysis on.
-```
-Dim startTime As Single
-Dim endTime  As Single
-
-yearValue = InputBox("What year would you like to run the analysis on?")
-
-startTime = Timer
-```
-The timer then ends at the very end of the script and displays a message box saying how long the code ran in the given year.
-```
-endTime = Timer
-MsgBox "This code ran in " & (endTime - startTime) & " seconds for the year " & (yearValue)
-```
-The original script timers were as follows:
-
-![Original Script (2017)](./Resources/Original_Script_(2017).PNG)
-
-![Original Script (2018)](./Resources/Original_Script_(2018).PNG)
-
-The refactored script timers were as follows:
-
-![Refactored Script (2017)](./Resources/VBA_Challenge_2017.PNG)
-
-![Refactored Script (2018)](./Resources/VBA_Challenge_2018.PNG)
-
-We can see from the timers that for both 2017 and 2018, the refactored script decreased the execution times by a little more than half a second.
-
-## Summary of Analysis
+## Summary
 
 ### Advantages and Disadvantages of Refactoring Code
-Refactoring code does not add new functionality or features, but it can make the overall code more efficient.
-
-Advantages of refactoring code include:
-
-- reducing the amount of redundant, unused, or repeated code;
-- helping to find bugs in the code;
-- making the code simpler and easier to understand and maintain;
-- reducing the execution time and making the program run faster.
-
-While refactoring code can be beneficial, it may not always be useful.
-
-Disadvantages of refactoring code include:
-
-- potentially being time consuming and therefore costly;
-- accidentally introducing bugs into the code.
+Refactoring the code can increase the efficiency but can take extra time and therefore be more costly. T
 
 ### Advantages and Disadvantages of the Original and Refactored VBA Script
 
-In terms of this data analysis and the comparison between the original and refactored VBA script, there were many clear advantages of the refactoring. Based on the script timers, we can see that the refactored script decreased the execution times by a little more than half a second. While this does not seem like a lot, this is an 85% decrease in execution times between the 2017 scripts and a 76% decrease in execution times between the 2018 scripts. We can clearly see the benefits this would have for much larger data sets and data analysis. I do not believe there were any disadvantages to refactoring this code due to the size of this data analysis, as it was not particularly time consuming and the risk of introducing bugs was low.
-
-
-
-
+In the original code we run through each row, generate data then output it right away before moving to the next ticker. In the refactored code, we run through each row one time while storing the data in the memory for each ticker and output it all at same time in the end. While the refactored code is much faster, I believe we may run out memory if we run it on thousands of tickers instead of only twelve. The original code would be slower but empty the memory after each ticker. We would need to test how many tickers the refactored code can handle without crashing but for this purpose it works very well.
