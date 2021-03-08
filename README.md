@@ -146,7 +146,7 @@ Next i
         
         Next i
 ```
-This new refactored code was almost ten times faster (~0.1 second) than the original code and will be very helpful for Steve as his dataset to analyze might just get bigger and bigger. 
+The new refactored code was almost ten times faster (~0.1 second) than the original code and may be very helpful for Steve as the dataset to analyze might just get bigger and bigger. 
 
 #### Original Code 2017
 ![Code1_2017](Resources/Code1_2017.png)
