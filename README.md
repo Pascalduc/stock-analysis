@@ -52,7 +52,46 @@ For this original code it is very important to activate the correct worksheet in
 ```
 Range("A1").Value = "All Stocks (" + yearValue + ")"
 ```
-At the end of the code, we inserted a few lines of formatting applied to the rows and columns of interest then stopped our timer.
+At the end of the code, we inserted a few lines to format the rows and columns of interest with bold text and various color highlights then stopped our timer.
+```
+Worksheets("All Stocks Analysis").Activate
+Range("A1:E3").Font.Bold = True
+Range("A3:E3").Borders(xlEdgeBottom).LineStyle = xlContinuous
+Range("A3:E3").Font.Italic = True
+Range("A1:E3").Interior.ColorIndex = 15
+Range("B4:B15").NumberFormat = "#,##0"
+Range("C4:C15").NumberFormat = "0.0%"
+Range("D4:E15").NumberFormat = "$0.00"
+Columns("A:E").AutoFit
+
+    dataRowStart = 4
+    dataRowEnd = 15
+    For i = dataRowStart To dataRowEnd
+
+        If Cells(i, 3) > 0 Then
+
+            'Color the cell green
+            Cells(i, 3).Interior.Color = vbGreen
+
+        ElseIf Cells(i, 3) < 0 Then
+
+            'Color the cell red
+            Cells(i, 3).Interior.Color = vbRed
+
+        Else
+
+            'Clear the cell color
+            Cells(i, 3).Interior.Color = xlNone
+
+        End If
+
+    Next i
+    
+    endTime = Timer
+    MsgBox "This code ran in " & (endTime - startTime) & " seconds for the year " & (yearValue)
+    
+End Sub
+```
 
 That first code was a little slow to run (~ 1 second) so we refactored our code using a new `tickerIndex` variable. This allowed us to store data for each ticker in the memory without having to run through each row multiple times while avoiding the nested loops. This new variable assigned an index across four aarays: 
 ```
