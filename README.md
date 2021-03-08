@@ -169,7 +169,7 @@ Overall, 2017 was a great year to invest with all analyzed stocks in the green e
 ## Summary
 
 ### Advantages and Disadvantages of Refactoring Code
-The refactored code greatly increase efficiency and might be better for big dataset but doing so take extra time and could affect cost. 
+The refactored code greatly increase efficiency and might be better for big dataset but doing so took extra labor and could affect cost. 
 
 ### Advantages and Disadvantages of the Original and Refactored VBA Script
 
