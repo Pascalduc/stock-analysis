@@ -33,8 +33,10 @@ This new refactored code was almost ten times faster (~0.1 second) than the orig
 
 
 Overall, 2017 was a great year to invest with analyzed stocks in the green except for TERP with -7.2% return. On the other hand, 2018 could be considered a terrible year with 10 of the 12 stocks in the red with only ENPH and RUN having positive returns. While the dataset is small, based on years and tickers, we would recommend Steve to invest in ENPH and RUN since these two stocks have got positive returns even during a bad market year. This would suggest the companies are well managed keeping acceptable level of cashflow and are profitable even during uncertainties and economic downturn. 
-![Return_2017](Resources/Return_2017).png)
 
+#### Return 2017
+![Return_2017](Resources/Return_2017.png)
+#### Return 2018
 ![Return_2018](Resources/Return_2018.png)
 
 ## Summary
