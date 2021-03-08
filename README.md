@@ -21,13 +21,13 @@ Dim tickerEndingPrices(12) As Single
 ```
 This new refactored code was almost ten times faster (~0.1 second) than the original code and will be very helpful for Steve as his dataset to analyze might just get bigger and bigger. 
 
-### Original Code 2017
+#### Original Code 2017
 ![Code1_2017](Resources/Code1_2017.png)
-### Refactored Code 2017
+#### Refactored Code 2017
 ![VBA_Challenge_2017](Resources/VBA_Challenge_2017.png)
-### Original Code 2018
+#### Original Code 2018
 ![Code1_2018](Resources/Code1_2018.png)
-### Refactored Code 2018
+#### Refactored Code 2018
 ![VBA_Challenge_2018](Resources/VBA_Challenge_2018.png)
 
 
